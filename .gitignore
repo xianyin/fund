@@ -1,0 +1,11 @@
+config.ini
+.settings
+.log
+.arcconfig
+target
+logs
+/*.classpath
+/*.project
+/bin/
+*.classpath
+__pycache__
