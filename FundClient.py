@@ -5,7 +5,6 @@ import MyUtils as util
 
 headers = {'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
 # fund_codes = ['519697', '110011','001704', '163210', '000363', '166002', '206009', '001178']
-# 记录下：国投瑞银 001704 1.4395卖出1/3 跌幅7.3%
 fund_codes = {'主动基金':['519697', '110011','001704'], 
     '九雾组合':['163210', '000363', '166002', '206009', '001178']}
     
