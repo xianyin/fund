@@ -5,6 +5,7 @@ from Logger import logger
 import requests
 import json
 import configparser
+import pymysql
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -45,3 +46,26 @@ def send_dingding(content) :
     r = requests.post(link, headers = headers, data = json.dumps(data))
     logger.info("钉钉发送状态：" + r.text)
     return r.text
+
+def get_sell_history_data() : 
+    try :
+        db = pymysql.connect(host = config.get('db', 'host'), port = 3306, user = config.get('db', 'user_name'),
+        password = config.get('db', 'user_password'), database = config.get('db', 'database'), charset = 'utf8')
+        cur = db.cursor()  # 获取会话指针，用来调用SQL语句
+        sql = 'SELECT * FROM fund_sell_history'  # 编写SQL语句
+        cur.execute(sql)  # 执行SQL语句
+        data = cur.fetchall()  # 提取所有数据，并赋值给data变量
+        # 数据无法按照row['code']取值
+        # for row in data :
+        #     code = row[2]
+        #     print(code)
+        # print(data)
+        
+    except Exception :
+        logger.error("Error: 数据库数据获取失败，{}".format(Exception))
+    finally :
+        cur.close()  # 关闭会话指针
+        db.close()  # 关闭数据库链接
+    return data
+    
+a = get_sell_history_data() 

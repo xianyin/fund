@@ -31,7 +31,7 @@ def print_fund_value(content) :
         content += key + ':\n'
         for code in value : 
             _json = get_fund_value_json(code)
-            content += '\t' + _json['name'] + '涨跌幅为:' + _json['gszzl'] + '%. \t当前时间：' + _json['gztime'] + '\n'
+            content += '\t<' + _json['name'] + '>估算涨跌幅为:' + _json['gszzl'] + '%. \t当前时间：' + _json['gztime'] + '\n'
     return content    
 
 # #获取上证指数值
@@ -46,7 +46,7 @@ def print_fund_value(content) :
 #     j_dic = json.loads(re.match(".*?({.*}).*", r.text, re.S).group(1))
 #     return j_dic
 
-#打印指数值
+# 打印指数值
 def print_fund_index(content) :
     links = ['http://26.push2.eastmoney.com/api/qt/clist/get?cb=jQuery112405048480031612907_1583982715293&pn=1&pz=21&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fs=i:1.000001&fields=f1,f2,f3,f4,f14', 'http://53.push2.eastmoney.com/api/qt/ulist.np/get?fid=f3&pi=0&pz=40&po=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&fields=f14,f12,f13,f2,f3,f4&np=1&secids=2C100.NDX%2C100.SPX', 'http://53.push2.eastmoney.com/api/qt/ulist.np/get?fid=f3&pi=0&pz=40&po=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&fields=f14,f12,f13,f2,f3,f4&np=1&secids=2C100.NDX%2C100.DJIA']
     # mail_content = content
@@ -64,13 +64,31 @@ def print_fund_index(content) :
         content += fund_index_name + '当前净值：' + fund_index_price + '，涨跌幅：' + fund_index_range + '%\n'
 
     return content
+# 打印卖出基金当前涨跌幅
+def print_sell_change(content) :
+    # 为何会输出None?
+    db_data = util.get_sell_history_data()
+    content += '\n'
+    for row in db_data :
+        fund_code = row[2]
+        # 根据基金码获取基金信息
+        fund_dict = get_fund_value_json(fund_code)
+        percentage = (float(fund_dict['dwjz']) - float(row[3])) / float(row[3])
+        # print(fund_dict['dwjz'])
+        content += '<' + fund_dict['name'] + '>截止到' + fund_dict['jzrq'] + '基金涨跌幅为：' + '%.2f%%' % (percentage * 100)
+        # print(content)
+    return content
+
 
 mail_content = ''
 mail_content = print_fund_value(mail_content)
 mail_content += '\n'
 mail_content = print_fund_index(mail_content)
+mail_contet = mail_content + '\n'
+mail_content = print_sell_change(mail_content)
 
-# print(mail_content)   
+print(mail_content)   
 # util.send_email(mail_content)
 util.send_dingding(mail_content)
+# print_sell_change("")
 
