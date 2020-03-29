@@ -60,12 +60,11 @@ def get_sell_history_data() :
         #     code = row[2]
         #     print(code)
         # print(data)
-        
-    except Exception :
-        logger.error("Error: 数据库数据获取失败，{}".format(Exception))
-    finally :
         cur.close()  # 关闭会话指针
         db.close()  # 关闭数据库链接
-    return data
+        return data
+    except Exception :
+        logger.error("Error: 数据库数据获取失败，{}".format(Exception))
     
-a = get_sell_history_data() 
+    
+print(get_sell_history_data())
