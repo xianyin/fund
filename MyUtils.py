@@ -6,9 +6,12 @@ import requests
 import json
 import configparser
 import pymysql
+import os
 
+config_dir = os.path.split(os.path.realpath(__file__))[0]
+config_path = os.path.join(config_dir, "config.ini")
 config = configparser.ConfigParser()
-config.read("config.ini")
+config.read(config_path)
 
 def send_email(content, _subtype='plain', _subject="基金当前净值"):
     # 第三方 SMTP 服务
