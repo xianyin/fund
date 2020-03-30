@@ -29,9 +29,14 @@ def print_fund_value(content) :
     items = fund_codes.items()
     for key, value in items :
         content += key + ':\n'
+        average_gszzl = 0.0
+        count_gszzl = 0
         for code in value : 
             _json = get_fund_value_json(code)
+            count_gszzl += 1 
+            average_gszzl += (float)(_json['gszzl'])
             content += '\t<' + _json['name'] + '>估算涨跌幅为:' + _json['gszzl'] + '%. \t当前时间：' + _json['gztime'] + '\n'
+        content += '组合平均涨幅：' + '%.2f%%' % (average_gszzl/count_gszzl) + '\n'
     return content    
 
 # #获取上证指数值
