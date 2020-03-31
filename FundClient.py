@@ -71,7 +71,6 @@ def print_fund_index(content) :
     return content
 # 打印卖出基金当前涨跌幅
 def print_sell_change(content) :
-    # 为何会输出None?
     db_data = util.get_sell_history_data()
     content += '\n'
     for row in db_data :
