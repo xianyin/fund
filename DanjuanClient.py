@@ -4,6 +4,7 @@ import json
 import schedule
 import datetime
 import time
+import random
 import MyUtils as util
 
 # 初始化钉钉发送开关
@@ -65,8 +66,8 @@ def job() :
             flag = False
         # 真正的check方法
         check_plan()
-        # 1分钟检测一次
-        time.sleep(60)
+        # 1分钟检测一次。防爬
+        time.sleep(60 + random.randint(0, 15))
             
 
 # 设置定时任务
